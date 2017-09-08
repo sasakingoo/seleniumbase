@@ -1,6 +1,10 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
+"""
+setup
+"""
+
 from setuptools import setup
 
 setup(
