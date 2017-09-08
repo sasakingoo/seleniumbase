@@ -53,7 +53,7 @@ def main():
         'password': password
     }
 
-    SeleniumBase.run_suite('test_case', params)
+    SeleniumBase.run_suite('test_case_sample', params)
 
 if __name__ == '__main__':
     main()
