@@ -62,10 +62,12 @@ class SeleniumBase(unittest.TestCase):
         """
         try:
             urllib2.urlopen(url)
-            return False
         except urllib2.HTTPError as http_err:
             if http_err.code == httplib.UNAUTHORIZED:
                 return True
+        except urllib2.URLError:
+            return False
+        else:
             return False
 
     @classmethod
