@@ -1,7 +1,13 @@
 # seleniumbase
 
-## install
+## get started
 
+* install phantomjs
 ```
-sudo pip install pip+https://github.com/sasakingoo/seleniumbase
+npm install phantomjs
+```
+
+* install seleniumbase
+```
+pip install pip+https://github.com/sasakingoo/seleniumbase
 ```
