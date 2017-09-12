@@ -47,11 +47,20 @@ class SeleniumBase(unittest.TestCase):
     def input_text(self, name, text):
         """
         Args
-            name: name attribute
-            text: input string
+            name (str): name attribute
+            text (str): input string
         """
         script = "document.getElementsByName('%s')[0].value = '%s';" % (name, text)
         self.driver.execute_script(script)
+
+    def check_radio(self, name, value):
+        """
+        Args:
+            name (str): name attribute
+            value (str): Value want to select
+        """
+        radio = self.driver.find_element_by_css_selector('input[name="%s"][value="%s"]' % (name, value))
+        radio.click()
 
     @classmethod
     def check_basic_auth(cls, url):
