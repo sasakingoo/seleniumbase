@@ -33,7 +33,6 @@ class TestCaseSample(SeleniumBase):
         driver.save_screenshot(self.ss_path + ss_name)
 
         # click search button
-        btn = driver.find_element_by_css_selector('input[type="submit"]')
-        btn.click()
+        self.click_btn('input[type="submit"]')
         ss_name = '%s_03.png' % func_name
         driver.save_screenshot(self.ss_path + ss_name)
