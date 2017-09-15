@@ -53,6 +53,14 @@ class SeleniumBase(unittest.TestCase):
         script = "document.getElementsByName('%s')[0].value = '%s';" % (name, text)
         self.driver.execute_script(script)
 
+    def click_btn(self, selector):
+        """
+        Args
+            selector (str): css selector
+        """
+        script = "document.querySelector('%s').onclick();" % selector
+        self.driver.execute_script(script)
+
     def click_radio(self, name, value):
         """
         Args:
