@@ -14,6 +14,8 @@ import unittest
 from selenium import webdriver
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 
+DEFAULT_WAIT_TIME = 10
+
 class SeleniumBase(unittest.TestCase):
     """
     selenium and unit test base class
@@ -26,6 +28,7 @@ class SeleniumBase(unittest.TestCase):
         '--ignore-ssl-errors=true',
         '--webdriver-loglevel=NONE'
     ]
+    default_wait_time = 10
 
     def setUp(self):
         if self.basic_auth:
@@ -40,6 +43,7 @@ class SeleniumBase(unittest.TestCase):
             self.driver = webdriver.PhantomJS(service_args=self.conf,
                                               service_log_path=os.path.devnull)
 
+        self.driver.implicitly_wait(DEFAULT_WAIT_TIME)
 
     def tearDown(self):
         self.driver.quit()
@@ -53,13 +57,13 @@ class SeleniumBase(unittest.TestCase):
         script = "document.getElementsByName('%s')[0].value = '%s';" % (name, text)
         self.driver.execute_script(script)
 
-    def click_btn(self, selector):
+    def click_btn(self, locator):
         """
         Args
-            selector (str): css selector
+            locator (str): css selector
         """
-        script = "document.querySelector('%s').onclick();" % selector
-        self.driver.execute_script(script)
+        btn = self.driver.find_element_by_css_selector(locator)
+        btn.click()
 
     def click_radio(self, name, value):
         """
@@ -67,8 +71,9 @@ class SeleniumBase(unittest.TestCase):
             name (str): name attribute
             value (str): Value want to select
         """
-        radio = self.driver.find_element_by_css_selector('input[name="%s"][value="%s"]' % (name, value))
-        radio.click()
+        locator = 'input[name="%s"][value="%s"]' % (name, value)
+        radio_btn = self.driver.find_element_by_css_selector(locator)
+        radio_btn.click()
 
     @classmethod
     def check_basic_auth(cls, url):
