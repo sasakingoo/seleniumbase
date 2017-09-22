@@ -28,7 +28,6 @@ class SeleniumBase(unittest.TestCase):
         '--ignore-ssl-errors=true',
         '--webdriver-loglevel=NONE'
     ]
-    default_wait_time = 10
 
     def setUp(self):
         if self.basic_auth:
