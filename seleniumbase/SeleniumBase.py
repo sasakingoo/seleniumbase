@@ -13,6 +13,10 @@ import httplib
 import unittest
 from selenium import webdriver
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import NoSuchElementException
 
 DEFAULT_WAIT_TIME = 10
 
@@ -73,6 +77,22 @@ class SeleniumBase(unittest.TestCase):
         locator = 'input[name="%s"][value="%s"]' % (name, value)
         radio_btn = self.driver.find_element_by_css_selector(locator)
         radio_btn.click()
+
+    def wait_for_enabled(self, html_id):
+        """
+        waiting for element enabled
+        Args:
+            html_id (str): html id attribute
+        Return:
+            bool
+        """
+        try:
+            elm = WebDriverWait(self.driver, DEFAULT_WAIT_TIME).until(
+                EC.presence_of_element_located((By.ID, html_id))
+            )
+            return elm.is_enabled()
+        except NoSuchElementException:
+            self.driver.save_screenshot()
 
     @classmethod
     def check_basic_auth(cls, url):
