@@ -78,17 +78,17 @@ class SeleniumBase(unittest.TestCase):
         radio_btn = self.driver.find_element_by_css_selector(locator)
         radio_btn.click()
 
-    def wait_for_enabled(self, html_id):
+    def wait_for_enabled(self, locator):
         """
         waiting for element enabled
         Args:
-            html_id (str): html id attribute
+            locator (str): css selector
         Return:
             bool
         """
         try:
             elm = WebDriverWait(self.driver, DEFAULT_WAIT_TIME).until(
-                EC.presence_of_element_located((By.ID, html_id))
+                EC.element_to_be_clickable((By.CSS_SELECTOR, locator))
             )
             return elm.is_enabled()
         except NoSuchElementException:
