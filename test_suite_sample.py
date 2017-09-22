@@ -15,7 +15,7 @@ execute options:
 
 import sys
 import argparse
-from seleniumbase import SeleniumBase
+from seleniumbase.SeleniumBase import SeleniumBase
 
 # website base URL
 BASE_URL = ''
