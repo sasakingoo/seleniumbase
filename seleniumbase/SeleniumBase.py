@@ -92,7 +92,23 @@ class SeleniumBase(unittest.TestCase):
             )
             return elm.is_enabled()
         except NoSuchElementException:
-            self.driver.save_screenshot()
+            self.driver.save_screenshot('wait_for_enabled_failed.png')
+
+    def wait_for_text_present(self, locator, text):
+        """
+        waiting for text present
+        Args:
+            locator (str): css selector
+            text (str): string to compare
+        Return:
+            bool
+        """
+        try:
+            WebDriverWait(self.driver, DEFAULT_WAIT_TIME).until(
+                EC.text_to_be_present_in_element((By.CSS_SELECTOR, locator), text)
+            )
+        except NoSuchElementException:
+            self.driver.save_screenshot('wait_for_text_present_failed.png')
 
     @classmethod
     def check_basic_auth(cls, url):
