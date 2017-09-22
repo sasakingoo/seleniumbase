@@ -9,5 +9,5 @@ npm install phantomjs
 
 * install seleniumbase
 ```
-pip install pip+https://github.com/sasakingoo/seleniumbase
+pip install git+https://github.com/sasakingoo/seleniumbase
 ```
