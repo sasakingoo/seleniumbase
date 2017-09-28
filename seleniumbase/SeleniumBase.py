@@ -104,7 +104,7 @@ class SeleniumBase(unittest.TestCase):
         """
         try:
             elm = self.driver.find_element_by_css_selector(locator)
-            while elm.is_enabled:
+            while elm.is_enabled():
                 elm = WebDriverWait(self.driver, DEFAULT_WAIT_TIME).until(
                     EC.element_to_be_clickable((By.CSS_SELECTOR, locator))
                 )
