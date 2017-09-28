@@ -94,6 +94,22 @@ class SeleniumBase(unittest.TestCase):
         except NoSuchElementException:
             self.driver.save_screenshot('wait_for_enabled_failed.png')
 
+    def wait_for_disabled(self, locator):
+        """
+        waiting for element disabled
+        Args:
+            locator (str): css selector
+        Return:
+            bool
+        """
+        try:
+            elm = WebDriverWait(self.driver, DEFAULT_WAIT_TIME).until(
+                not self.driver.find_element_by_css_selector(locator).is_enabled()
+            )
+            return not elm.is_enabled()
+        except NoSuchElementException:
+            self.driver.save_screenshot('wait_for_disabled_failed.png')
+
     def wait_for_text_present(self, locator, text):
         """
         waiting for text present
