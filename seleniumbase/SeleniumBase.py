@@ -93,6 +93,7 @@ class SeleniumBase(unittest.TestCase):
             return elm.is_enabled()
         except NoSuchElementException:
             self.driver.save_screenshot('wait_for_enabled_failed.png')
+            return False
 
     def wait_for_disabled(self, locator):
         """
@@ -103,14 +104,13 @@ class SeleniumBase(unittest.TestCase):
             bool
         """
         try:
-            elm = self.driver.find_element_by_css_selector(locator)
-            while elm.is_enabled():
-                elm = WebDriverWait(self.driver, DEFAULT_WAIT_TIME).until(
-                    EC.element_to_be_clickable((By.CSS_SELECTOR, locator))
-                )
+            elm = WebDriverWait(self.driver, DEFAULT_WAIT_TIME).until_not(
+                EC.element_to_be_clickable((By.CSS_SELECTOR, locator))
+            )
             return not elm.is_enabled()
         except NoSuchElementException:
             self.driver.save_screenshot('wait_for_disabled_failed.png')
+            return False
 
     def wait_for_text_present(self, locator, text):
         """
