@@ -109,7 +109,7 @@ class SeleniumBase(unittest.TestCase):
                 EC.element_selection_state_to_be((By.CSS_SELECTOR, locator), condition)
             )
         except NoSuchElementException:
-            self.driver.save_screenshot('wait_for_disabled_failed.png')
+            self.driver.save_screenshot('wait_for_condition_failed.png')
             return False
 
     def wait_for_text_present(self, locator, text):
