@@ -103,9 +103,11 @@ class SeleniumBase(unittest.TestCase):
             bool
         """
         try:
-            elm = WebDriverWait(self.driver, DEFAULT_WAIT_TIME).until(
-                not self.driver.find_element_by_css_selector(locator).is_enabled()
-            )
+            elm = self.driver.find_element_by_css_selector(locator)
+            while elm.is_enabled:
+                elm = WebDriverWait(self.driver, DEFAULT_WAIT_TIME).until(
+                    EC.element_to_be_clickable((By.CSS_SELECTOR, locator))
+                )
             return not elm.is_enabled()
         except NoSuchElementException:
             self.driver.save_screenshot('wait_for_disabled_failed.png')
