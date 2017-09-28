@@ -104,7 +104,7 @@ class SeleniumBase(unittest.TestCase):
             bool
         """
         try:
-            return WebDriverWait(self.driver, DEFAULT_WAIT_TIME).until_not(
+            return WebDriverWait(self.driver, DEFAULT_WAIT_TIME).until(
                 EC.element_to_be_selected((By.CSS_SELECTOR, locator))
             )
         except NoSuchElementException:
