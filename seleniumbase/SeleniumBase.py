@@ -105,9 +105,11 @@ class SeleniumBase(unittest.TestCase):
             bool
         """
         try:
-            return WebDriverWait(self.driver, DEFAULT_WAIT_TIME).until(
-                EC.element_selection_state_to_be((By.CSS_SELECTOR, locator), condition)
+            elm = self.driver.find_element_by_css_selector(locator)
+            res = WebDriverWait(self.driver, DEFAULT_WAIT_TIME).until(
+                EC.element_selection_state_to_be(elm, condition)
             )
+            return res
         except NoSuchElementException:
             self.driver.save_screenshot('wait_for_condition_failed.png')
             return False
