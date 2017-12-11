@@ -17,6 +17,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import NoSuchElementException
+from selenium.common.exceptions import TimeoutException
 
 DEFAULT_WAIT_TIME = 10
 
@@ -120,8 +121,6 @@ class SeleniumBase(unittest.TestCase):
         Args:
             locator (str): css selector
             text (str): string to compare
-        Return:
-            bool
         """
         try:
             WebDriverWait(self.driver, DEFAULT_WAIT_TIME).until(
@@ -129,6 +128,19 @@ class SeleniumBase(unittest.TestCase):
             )
         except NoSuchElementException:
             self.driver.save_screenshot('wait_for_text_present_failed.png')
+
+    def wait_for_title(self, title):
+        """
+        waiting for title
+        Args:
+            title (str): page title
+        """
+        try:
+            WebDriverWait(self.driver, DEFAULT_WAIT_TIME).until(
+                EC.title_is(title)
+            )
+        except TimeoutException:
+            self.driver.save_screenshot('wait_for_title_failed.png')
 
     @classmethod
     def check_basic_auth(cls, url):
