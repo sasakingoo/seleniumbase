@@ -12,6 +12,7 @@ import urllib2
 import httplib
 import unittest
 from selenium import webdriver
+from selenium.webdriver.support.select import Select
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -51,6 +52,16 @@ class SeleniumBase(unittest.TestCase):
 
     def tearDown(self):
         self.driver.quit()
+
+    def select(self, locator, value):
+        """
+        Args
+            locator (str): css selector
+            value (str): value for want to select
+        """
+        elm = self.driver.find_element_by_css_selector(locator)
+        select = Select(elm)
+        select.select_by_value(value)
 
     def input_text(self, name, text):
         """
