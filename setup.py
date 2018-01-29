@@ -9,7 +9,7 @@ from setuptools import setup
 
 setup(
     name='seleniumbase',
-    version='0.0.2',
+    version='0.0.3',
     description='selenium and unittest base modules.',
     author='Yuya Sasaki',
     author_email=' y.sasaki.1305@gmail.com',

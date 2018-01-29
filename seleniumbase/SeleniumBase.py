@@ -7,18 +7,17 @@ require PhantomJS
 """
 
 import os
-import base64
 import urllib2
 import httplib
 import unittest
 from selenium import webdriver
 from selenium.webdriver.support.select import Select
-from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import NoSuchElementException
 from selenium.common.exceptions import TimeoutException
+from selenium.webdriver.firefox.options import Options
 
 DEFAULT_WAIT_TIME = 10
 
@@ -30,28 +29,35 @@ class SeleniumBase(unittest.TestCase):
     basic_auth = False
     user = ''
     password = ''
-    conf = [
-        '--ignore-ssl-errors=true',
-        '--webdriver-loglevel=NONE'
-    ]
+    wait_time = DEFAULT_WAIT_TIME
 
     def setUp(self):
         if self.basic_auth:
-            b64_account = base64.b64encode(b'%s:%s' % (self.user, self.password))
-            authentication_token = "Basic %s" % b64_account
-            capa = DesiredCapabilities.PHANTOMJS
-            capa['phantomjs.page.customHeaders.Authorization'] = authentication_token
-            self.driver = webdriver.PhantomJS(desired_capabilities=capa,
-                                              service_args=self.conf,
-                                              service_log_path=os.path.devnull)
-        else:
-            self.driver = webdriver.PhantomJS(service_args=self.conf,
-                                              service_log_path=os.path.devnull)
+            self.base_url = self.base_url.replace('//', '//%s:%s@' % (self.user, self.password))
 
-        self.driver.implicitly_wait(DEFAULT_WAIT_TIME)
+        # enable Headless mode
+        opts = Options()
+        opts.add_argument('--headless')
+
+        self.driver = webdriver.Firefox(log_path=os.path.devnull,
+                                        firefox_options=opts)
+
+        self.driver.implicitly_wait(self.wait_time)
 
     def tearDown(self):
         self.driver.quit()
+
+    def save_screenshot(self, filename):
+        """
+        save full size screenshot.
+            webdriver.save_screenshot wrapper
+        Args
+            filename (str): screenshot file name
+        """
+        width = self.driver.find_element_by_tag_name('body').get_attribute('scrollWidth')
+        height = self.driver.find_element_by_tag_name('body').get_attribute('scrollHeight')
+        self.driver.set_window_size(width, height)
+        self.driver.save_screenshot(filename)
 
     def select(self, locator, value):
         """

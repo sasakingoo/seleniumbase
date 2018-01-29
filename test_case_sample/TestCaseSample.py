@@ -25,14 +25,14 @@ class TestCaseSample(SeleniumBase):
 
         # get access
         ss_name = '%s_01.png' % func_name
-        driver.save_screenshot(self.ss_path + ss_name)
+        self.save_screenshot(self.ss_path + ss_name)
 
         # input search word
         self.input_text('q', 'python')
         ss_name = '%s_02.png' % func_name
-        driver.save_screenshot(self.ss_path + ss_name)
+        self.save_screenshot(self.ss_path + ss_name)
 
         # click search button
         self.click_btn('input[type="submit"]')
         ss_name = '%s_03.png' % func_name
-        driver.save_screenshot(self.ss_path + ss_name)
+        self.save_screenshot(self.ss_path + ss_name)
