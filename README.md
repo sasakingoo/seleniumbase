@@ -4,5 +4,5 @@
 
 * install seleniumbase
 ```
-pip install git+https://github.com/sasakingoo/seleniumbase
+pip install git+https://github.com/sasakidmap/seleniumbase
 ```
