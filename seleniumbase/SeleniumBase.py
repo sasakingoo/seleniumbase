@@ -165,18 +165,25 @@ class SeleniumBase(unittest.TestCase):
     def check_basic_auth(cls, url, ignore_ssl_cert_err=False):
         """
         check basic auth
+        Args:
+            url (str): target web site URL
+            ignore_ssl_cert_err (bool): ignore ssl cert error flag (default: False)
         Return:
             bool
         """
+        if ignore_ssl_cert_err:
+            ssl._create_default_https_context = ssl._create_unverified_context
+
         try:
-            if ignore_ssl_cert_err:
-                ssl._create_default_https_context = ssl._create_unverified_context
             urllib2.urlopen(url)
-        except urllib2.HTTPError as http_err:
-            if http_err.code == httplib.UNAUTHORIZED:
+        except urllib2.HTTPError as e:
+            if e.code == httplib.UNAUTHORIZED:
                 return True
-        except urllib2.URLError as url_err:
-            print url_err
+            else:
+                print e
+                return False
+        except urllib2.URLError as e:
+            print e
             return False
         else:
             return False
