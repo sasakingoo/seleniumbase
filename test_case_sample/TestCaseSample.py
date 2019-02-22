@@ -8,6 +8,7 @@ sample
 import inspect
 from seleniumbase.SeleniumBase import SeleniumBase
 
+
 class TestCaseSample(SeleniumBase):
     """
     Test Case Sample

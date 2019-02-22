@@ -9,6 +9,7 @@ require PhantomJS
 import os
 import urllib2
 import httplib
+import ssl
 import unittest
 from selenium import webdriver
 from selenium.webdriver.support.select import Select
@@ -20,6 +21,7 @@ from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.firefox.options import Options
 
 DEFAULT_WAIT_TIME = 10
+
 
 class SeleniumBase(unittest.TestCase):
     """
@@ -160,18 +162,28 @@ class SeleniumBase(unittest.TestCase):
             self.driver.save_screenshot('wait_for_title_failed.png')
 
     @classmethod
-    def check_basic_auth(cls, url):
+    def check_basic_auth(cls, url, ignore_ssl_cert_err=False):
         """
         check basic auth
+        Args:
+            url (str): target web site URL
+            ignore_ssl_cert_err (bool): ignore ssl cert error flag (default: False)
         Return:
             bool
         """
+        if ignore_ssl_cert_err:
+            ssl._create_default_https_context = ssl._create_unverified_context
+
         try:
             urllib2.urlopen(url)
-        except urllib2.HTTPError as http_err:
-            if http_err.code == httplib.UNAUTHORIZED:
+        except urllib2.HTTPError as e:
+            if e.code == httplib.UNAUTHORIZED:
                 return True
-        except urllib2.URLError:
+            else:
+                print e
+                return False
+        except urllib2.URLError as e:
+            print e
             return False
         else:
             return False
